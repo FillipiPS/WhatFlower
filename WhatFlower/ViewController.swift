@@ -15,6 +15,7 @@ import SwiftyJSON
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var textView: UITextView!
     
     let imagePicker = UIImagePickerController()
     let wikipediaURL = "https://en.wikipedia.org/w/api.php"
@@ -75,6 +76,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             case .success:
                 print("Validation Successful")
                 print(response)
+                
+                let flowerJSON: JSON = JSON(response.value!)
+                
+                let pageid = flowerJSON["query"]["pageids"][0].stringValue
+                
+                let flowerDescription = flowerJSON["query"]["pages"][pageid]["extract"].stringValue
+                
+                self.textView.text = flowerDescription
+                
             case let .failure(error):
                 print(error)
             }
